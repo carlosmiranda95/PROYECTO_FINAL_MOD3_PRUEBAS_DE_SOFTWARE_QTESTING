@@ -6,12 +6,17 @@
 package APIRestTest;
 
 import com.mycompany.apirestproyectofinalmodulo3.ApiRestWallet;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.ws.rs.core.Response;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import persistence.SQLiteConnectionWallet;
+
 
 /**
  *
@@ -39,9 +44,19 @@ public class JUnitTestTDD {
     }
     
     @Test
-    public void testCashin(){
-        ApiRestWallet objWallet = new ApiRestWallet();
+    public void testCashIn() throws ClassNotFoundException, SQLException{
         
+    }
+    @Test
+    public void testCashOut() throws SQLException, ClassNotFoundException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        String data = objConnection.cashOut(5.50);
+        assertTrue(true);
+    }
+    @Test
+    public void testGetBalance() throws SQLException, ClassNotFoundException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        assertNotNull(objConnection.getBalance());
     }
     
     
