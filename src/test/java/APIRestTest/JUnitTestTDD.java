@@ -6,6 +6,7 @@
 package APIRestTest;
 
 import com.mycompany.apirestproyectofinalmodulo3.ApiRestWallet;
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.ws.rs.core.Response;
@@ -44,20 +45,33 @@ public class JUnitTestTDD {
     }
     
     @Test
-    public void testCashIn() throws ClassNotFoundException, SQLException{
-        
-    }
-    @Test
-    public void testCashOut() throws SQLException, ClassNotFoundException{
+    public void testGetConnectionDB() throws ClassNotFoundException, SQLException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
-        String data = objConnection.cashOut(5.50);
-        assertTrue(true);
+        assertTrue(objConnection.getConnection());
     }
+    
+    @Test
+    public void testCreationSqliteDB() throws ClassNotFoundException, SQLException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        assertTrue(objConnection.initialise());
+    }
+    
     @Test
     public void testGetBalance() throws SQLException, ClassNotFoundException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
         assertNotNull(objConnection.getBalance());
     }
+    @Test
+    public void testCashIn() throws ClassNotFoundException, SQLException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        assertEquals(String,objConnection.cashIn(100));
+    }
+    @Test
+    public void testCashOut() throws ClassNotFoundException, SQLException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        assertEquals(String,objConnection.cashOut(50));
+    }
+    
     
     
     

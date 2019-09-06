@@ -51,18 +51,18 @@ public class ApiRestWallet {
     @POST
     @Path("cashin")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response cashIn(@FormParam("monto") double monto) {
+    public Response cashIn(@FormParam("monto") double monto) throws ClassNotFoundException, SQLException {
+        objConnectionSql = new SQLiteConnectionWallet();
         String message = "{\"codigo\": \"code\",\"entrada\": \"saldowallet\",\"saldo\": \"balance\"}";
         message = message.replaceAll("code","0");
         message = message.replaceAll("saldowallet",Double.toString(monto));
-        message = message.replaceAll("balance",Double.toString(monto));
+        message = message.replaceAll("balance",objConnectionSql.cashIn(monto));
         return Response
           .status(Response.Status.OK)
           .entity(message)
           .type(MediaType.APPLICATION_JSON)
           .build();
     }
-    
     @POST
     @Path("cashout")
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,14 +71,14 @@ public class ApiRestWallet {
         String message = "{\"codigo\": \"code\",\"retiro\": \"retirowallet\",\"saldo\": \"saldowallet\"}";
         message = message.replaceAll("code","0");
         message = message.replaceAll("retirowallet",Double.toString(monto));
-        message = message.replaceAll("saldowallet",objConnectionSql.cashOut(monto));
+        String data = objConnectionSql.cashOut(monto);
+        message = message.replaceAll("saldowallet",data);
         return Response
           .status(Response.Status.OK)
           .entity(message)
           .type(MediaType.APPLICATION_JSON)
           .build();
     }
-    
     @POST
     @Path("getbalance")
     @Produces(MediaType.APPLICATION_JSON)

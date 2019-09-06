@@ -20,48 +20,63 @@ import java.util.ArrayList;
 public class SQLiteConnectionWallet {
     private static Connection con;
     private static boolean hasData = false;
-    public SQLiteConnectionWallet(){
-    
+    public boolean getConnection() throws ClassNotFoundException, SQLException {
+		 try{
+                    Class.forName("org.sqlite.JDBC");
+                    con = DriverManager.getConnection("jdbc:sqlite:SQLiteWallet.db");
+                    initialise();
+                    return true;
+                  }catch(ClassNotFoundException | SQLException e){
+                      return false;
+                  }
     }
-    private void getConnection() throws ClassNotFoundException, SQLException {
-		  // sqlite driver
-		  Class.forName("org.sqlite.JDBC");
-		  // database path, if it's new database, it will be created in the project folder
-		  con = DriverManager.getConnection("jdbc:sqlite:SQLiteWallet.db");
-		  initialise();
-    }
-    private void initialise() throws SQLException {
+    public boolean initialise() throws SQLException {
 		 if( !hasData ) {
 			 hasData = true;
-			 // check for database table
 			 Statement state = con.createStatement();
 			 ResultSet res = state.executeQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='wallet'");
-			 if( !res.next()) {
+			 if(!res.next()) {
 				 System.out.println("CONSTRUYENDO BASE DE DATOS.");
-				 // need to build the table
 				  Statement state2 = con.createStatement();
 				  state2.executeUpdate("create table wallet(saldo DOUBLE);");
-				  // inserting some sample data
 				  PreparedStatement prep = con.prepareStatement("insert into wallet values(0);");
 				  prep.execute();
-			 }
-			 
+                                  return true;
+			 }else{
+                             return false;
+                         }
 		 }
     }
+  
     public String getBalance() throws SQLException, ClassNotFoundException {
-		 if(con == null) {
-                    getConnection();
+                 if(con == null) {
+			 getConnection();
 		 }
 		 Statement state = con.createStatement();
 		 ResultSet res = state.executeQuery("select * from wallet");
-                 return res.getString("saldo");
+                 String stres = res.getString("saldo");
+                 //con.close();
+                 return stres;
     }
     public String cashOut(double monto) throws SQLException, ClassNotFoundException{
                  if(con == null) {
-                    getConnection();
+			 getConnection();
 		 }
-		 Statement state = con.createStatement();
-		 state.executeQuery("UPDATE wallet SET saldo = saldo -" + monto);
+		 
+                 String sql = "UPDATE wallet SET saldo = saldo - " + monto;
+                 PreparedStatement state = con.prepareStatement(sql);
+		 state.execute();
+                 //con.close();
+                 return getBalance();
+    }
+    public String cashIn(double monto) throws SQLException, ClassNotFoundException{
+                 if(con == null) {
+			 getConnection();
+		 }
+                 String sql = "UPDATE wallet SET saldo = saldo + " + monto;
+		 PreparedStatement state = con.prepareStatement(sql);
+		 state.execute();
+                 //con.close();
                  return getBalance();
     }
 }
