@@ -18,7 +18,7 @@ import java.util.ArrayList;
  * @author Carlos Miranda Rocha
  */
 public class SQLiteConnectionWallet {
-    private static Connection con;
+    public static Connection con;
     private static boolean hasData = false;
     public boolean getConnection() throws ClassNotFoundException, SQLException {
 		 try{
@@ -31,6 +31,7 @@ public class SQLiteConnectionWallet {
                   }
     }
     public boolean initialise() throws SQLException {
+                 boolean respuesta = false;
 		 if( !hasData ) {
 			 hasData = true;
 			 Statement state = con.createStatement();
@@ -41,11 +42,10 @@ public class SQLiteConnectionWallet {
 				  state2.executeUpdate("create table wallet(saldo DOUBLE);");
 				  PreparedStatement prep = con.prepareStatement("insert into wallet values(0);");
 				  prep.execute();
-                                  return true;
-			 }else{
-                             return false;
-                         }
+                            respuesta = true;
+			 }
 		 }
+                 return respuesta;
     }
   
     public String getBalance() throws SQLException, ClassNotFoundException {

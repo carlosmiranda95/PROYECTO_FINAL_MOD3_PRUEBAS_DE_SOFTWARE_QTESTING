@@ -7,6 +7,7 @@ package APIRestTest;
 
 import com.mycompany.apirestproyectofinalmodulo3.ApiRestWallet;
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.String;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.ws.rs.core.Response;
@@ -51,9 +52,12 @@ public class JUnitTestTDD {
     }
     
     @Test
-    public void testCreationSqliteDB() throws ClassNotFoundException, SQLException{
+    public void testExistingSqliteDB() throws ClassNotFoundException, SQLException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
-        assertTrue(objConnection.initialise());
+        Class.forName("org.sqlite.JDBC");
+        SQLiteConnectionWallet.con = DriverManager.getConnection("jdbc:sqlite:SQLiteWallet.db");
+        assertFalse(objConnection.initialise());
+        SQLiteConnectionWallet.con.close();
     }
     
     @Test
@@ -64,12 +68,12 @@ public class JUnitTestTDD {
     @Test
     public void testCashIn() throws ClassNotFoundException, SQLException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
-        assertEquals(String,objConnection.cashIn(100));
+        assertNotNull(objConnection.cashIn(100));
     }
     @Test
     public void testCashOut() throws ClassNotFoundException, SQLException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
-        assertEquals(String,objConnection.cashOut(50));
+        assertNotNull(objConnection.cashOut(50));
     }
     
     
