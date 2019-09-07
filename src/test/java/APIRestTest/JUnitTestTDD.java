@@ -44,20 +44,20 @@ public class JUnitTestTDD {
     @After
     public void tearDown() {
     }
-    
-    @Test
-    public void testGetConnectionDB() throws ClassNotFoundException, SQLException{
-        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
-        assertTrue(objConnection.getConnection());
-    }
-    
     @Test
     public void testExistingSqliteDB() throws ClassNotFoundException, SQLException{
         SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
         Class.forName("org.sqlite.JDBC");
         SQLiteConnectionWallet.con = DriverManager.getConnection("jdbc:sqlite:SQLiteWallet.db");
-        assertFalse(objConnection.initialise());
+        boolean respuesta = objConnection.initialise();
         SQLiteConnectionWallet.con.close();
+        assertTrue(respuesta);
+    }
+    
+    @Test
+    public void testGetConnectionDB() throws ClassNotFoundException, SQLException{
+        SQLiteConnectionWallet objConnection = new SQLiteConnectionWallet();
+        assertTrue(objConnection.getConnection());
     }
     
     @Test
