@@ -19,7 +19,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <label for="txtmonto">Monto de Dinero</label>
-                            <input type="number" class="form-control" id="txtmonto" placeholder="Monto">
+                            <input type="number" class="form-control" name="txtmonto" id="txtmonto" placeholder="Monto">
                         </div>
                         <div class="col-sm-4">
                             <label id="lblrespuesta">Respuesta</label>
@@ -31,10 +31,10 @@
                             <button id="btnconsultar" type="button" class="btn btn-success">Consultar</button>
                         </div>
                         <div class="col-sm-4">
-                            <button id="btndepositar" type="button" class="btn btn-primary">Depositar</button>
+                            <button id="btndepositar"  type="button" class="btn btn-primary">Depositar</button>
                         </div>
                         <div class="col-sm-4">
-                            <button id="btnretirar" type="button" class="btn btn-warning">Retirar</button>
+                            <button id="btnretirar" name="btnretirar" type="button" class="btn btn-warning">Retirar</button>
                         </div>
 
                     </div>
