@@ -16,10 +16,12 @@ When('Preparo la solicitud del doposito', function () {
   httpOptions = {
     method: 'POST',
     uri: urlEndpoint,
+     form: {
+        monto: monto
+    },
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: monto,
     resolveWithFullResponse: true
   };
 });
